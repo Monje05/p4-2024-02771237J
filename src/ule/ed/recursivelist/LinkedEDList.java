@@ -22,36 +22,90 @@ public class LinkedEDList<T> implements EDList<T> {
 
 	@Override
 	public boolean isEmpty() {
-		// TODO 
+		if(front == null) {
+			return true;
+		}
 		return false;
 	}
 
-
 	@Override
 	public int size() {
-		// TODO RECURSIVAMENTE
-		return 0;
+		if(isEmpty()) {
+			return 0;
+		}
+		return sizeRecursive(front);
+	}
+
+	private int sizeRecursive(Node<T> node) {
+		if(node == null) {
+			return 0;
+		} else {
+			return 1 + sizeRecursive(node.next);
+		}
 	}
 
 
 	@Override
 	public void addLast(T elem) {
-		// TODO RECURSIVAMENTE
+		if(elem == null) {
+			throw new NullPointerException();
+		}
+		front = addLastRecursive(front, elem);
 		
+	}
+
+	private Node<T> addLastRecursive(Node<T> node, T elem) {
+		if(node == null) {
+			return new Node<T>(elem);
+		} else {
+			node.next = addLastRecursive(node.next, elem);
+			return node;
+		}
 	}
 
 	
 	@Override
 	public void addPos(T elem, int position) {
-		// TODO RECURSIVAMENTE
+		if(elem == null) {
+			throw new NullPointerException();
+		}
+		if(position <= 0) {
+			throw new IllegalArgumentException();
+		}
+		if(position > size()) {
+			addLast(elem);
+		} else {
+			front = addPosRecursive(front, elem, position);
+		}
 		
+	}
+
+	private Node<T> addPosRecursive(Node<T> node, T elem, int position) {
+		if(position == 1) {
+			Node<T> newNode = new Node<T>(elem);
+			newNode.next = node;
+			return newNode;
+		} else {
+			node.next = addPosRecursive(node.next, elem, position - 1);
+			return node;
+		}
 	}
 
 
 	@Override
 	public T getElemPos(int position) {
-		// TODO RECURSIVAMENTE
-		return null;
+		if(position < 1 || position > size()) {
+			throw new IllegalArgumentException();
+		}
+		return getElemPosRecursive(front, position);
+	}
+
+	public T getElemPosRecursive(Node<T> node, int position) {
+		if(position == 1) {
+			return node.elem;
+		} else {
+			return getElemPosRecursive(node.next, position - 1);
+		}
 	}
 
 
@@ -143,9 +197,19 @@ public class LinkedEDList<T> implements EDList<T> {
 
 	@Override
 	public String toString() {
-		// TODO RECURSIVAMENTE
-	
-		return null;
+		return "(" + toStringRecursive(front) + " )";
+	}
+
+	private String toStringRecursive(Node<T> node) {
+		if(isEmpty()) { 
+			return " ";
+		} else if(node == null) {
+			return "";
+		} else if (node.next == null) {
+			return node.elem.toString();
+		} else {
+			return node.elem.toString() + " " + toStringRecursive(node.next);
+		}
 	}
 
 	
