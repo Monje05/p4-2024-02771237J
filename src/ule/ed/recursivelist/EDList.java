@@ -1,5 +1,6 @@
 package ule.ed.recursivelist;
 
+import java.util.NoSuchElementException;
 
 public interface EDList<T> {
 	/**
@@ -266,6 +267,20 @@ primera	 * <p>
 	 * @return true si la longitud de la lista es igual a n, false en caso contrario
 	 */
 	public boolean lengthEqualsTo(int n);
+
+
+	/**
+	* TODO RECURSIVO: Añade un elemento delante del elemento indicado como segundo parámetro.
+	* Si el elemento target no está en la lista lo inserta como primer elemento de la lista
+	* Devuelve True si el target estaba en la lista, False en caso contrario
+	* Si una lista l contiene (A B C ) y hacemos l.addBefore("Z", "B") la lista quedará (A Z B C ) y devolverá true.
+	*  Si una lista l contiene (A B C ) y hacemos l.addBefore("Z", "K") la lista quedará  (Z A B C ) y devolverá false.
+	* @param elem     el elemento a añadir
+	* @param target   el elemento a buscar, si se encuentra se inserta elem delante de este.
+	* @throws NullPointerException     si elem o target son <code>null</code>
+	* @return true si el target estaba en la lista, false en caso contrario	
+	*/
+	public boolean addBefore(T elem, T target);
 			
 	
 	

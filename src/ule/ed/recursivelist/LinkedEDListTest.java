@@ -2,6 +2,8 @@ package ule.ed.recursivelist;
 
 import static org.junit.Assert.*;
 
+import java.util.NoSuchElementException;
+
 import org.junit.*;
 
 
@@ -109,6 +111,88 @@ public class LinkedEDListTest {
 		lista.getElemPos(-3);
 		lista.addLast("5");
 		lista.getElemPos(7);
+	}
+
+	@Test
+	public void testGetPosFirst() {
+		lista.addLast("4");
+		lista.addLast("4");
+		lista.addLast("6");
+		lista.addLast("3");
+		lista.addLast("3");
+		lista.addLast("5");
+		Assert.assertEquals(4, lista.getPosFirst("3"));
+	}
+
+	@Test(expected = NullPointerException.class)
+	public void testGetPosFirstNullException() {
+		lista.getPosFirst(null);
+	}
+
+	@Test(expected = NoSuchElementException.class) 
+	public void testGetPosFirstNoSuchException() {
+		lista.addLast("4");
+		lista.addLast("4");
+		lista.addLast("6");
+		lista.addLast("3");
+		lista.addLast("3");
+		lista.addLast("5");
+		Assert.assertEquals(-1, lista.getPosFirst("9"));
+	}
+
+	@Test
+	public void testGetPosLast() {
+		lista.addLast("4");
+		lista.addLast("4");
+		lista.addLast("6");
+		lista.addLast("3");
+		lista.addLast("3");
+		lista.addLast("5");
+		Assert.assertEquals(2, lista.getPosLast("4"));
+	}
+
+	@Test(expected = NullPointerException.class)
+	public void testGetPosLastNullException() {
+		lista.getPosLast(null);
+	}
+
+	@Test(expected = NoSuchElementException.class) 
+	public void testGetPosLastNoSuchException() {
+		lista.addLast("4");
+		lista.addLast("4");
+		lista.addLast("6");
+		lista.addLast("3");
+		lista.addLast("3");
+		lista.addLast("5");
+		Assert.assertEquals(-1, lista.getPosLast("9"));
+	}
+
+	@Test
+	public void testRemoveLast() throws EmptyCollectionException {
+		lista.addLast("4");
+		lista.addLast("4");
+		lista.addLast("6");
+		lista.addLast("3");
+		lista.addLast("3");
+		lista.addLast("5");
+		lista.removelast();
+		Assert.assertEquals("(4 4 6 3 3 )", lista.toString());
+	}
+
+	@Test(expected = EmptyCollectionException.class)
+	public void testRemoveLastEmptyException() throws EmptyCollectionException{
+		lista.removelast();
+	}
+
+	@Test
+	public void testRemoveLastElem() {
+		lista.addLast("4");
+		lista.addLast("4");
+		lista.addLast("6");
+		lista.addLast("3");
+		lista.addLast("3");
+		lista.addLast("5");
+		Assert.assertEquals(5, lista.removeLastElem("3"));
 	}
 
 	@Test(expected=EmptyCollectionException.class)

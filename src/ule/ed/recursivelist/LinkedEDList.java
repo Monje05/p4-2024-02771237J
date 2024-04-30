@@ -1,5 +1,6 @@
 package ule.ed.recursivelist;
 
+import java.util.NoSuchElementException;
 
 public class LinkedEDList<T> implements EDList<T> {
 
@@ -112,36 +113,118 @@ public class LinkedEDList<T> implements EDList<T> {
 
 	@Override
 	public int getPosFirst(T elem) {
-		// TODO RECURSIVAMENTE
-		return 0;
+		if(elem == null) {
+			throw new NullPointerException();
+		}
+		int position = getPosFirstRecursive(front, elem, 1);
+		if(position == -1) {
+			throw new NoSuchElementException();
+		}
+		return position;
+	}
+
+	public int getPosFirstRecursive(Node<T> node, T elem, int position) {
+		if(node == null) {
+			return -1;
+		}
+		if(node.elem.equals(elem)) {
+			return position;
+		} 
+		return getPosFirstRecursive(node.next, elem, position + 1);
 	}
 
 
 
 	@Override
 	public int getPosLast(T elem) {
-		// TODO RECURSIVAMENTE
-		return 0;
+		if(elem == null) {
+			throw new NullPointerException();
+		}
+		int position = getPosLastRecursive(front, elem, 1, -1);
+		if(position == -1) {
+			throw new NoSuchElementException();
+		}
+		return position;
+	}
+
+	public int getPosLastRecursive(Node<T> node, T elem, int current, int lastPosition) {
+		if(node == null) {
+			return lastPosition;
+		}
+		if(node.elem.equals(elem)) {
+			lastPosition = current;
+		}
+		return getPosLastRecursive(node.next, elem, current + 1, lastPosition);
 	}
 
 
 
 	@Override
 	public T removelast() throws EmptyCollectionException {
-		// TODO RECURSIVAMENTE
+		if(isEmpty()) {
+			throw new EmptyCollectionException("La lista esta vacía.");
+		}
+		front = removeLastRecursive(front);
 		return null;
 	}
 
+	public Node<T> removeLastRecursive(Node<T> node) {
+		if(node.next == null) {
+			return null;
+		}
+		node.next = removeLastRecursive(node.next);
+		return node;
+	}
 
-
-	
 
 	@Override
 	public int removeLastElem(T elem) {
-		// TODO RECURSIVAMENTE
-		return 0;
+		if(elem == null) {
+			throw new NullPointerException();
+		}
+		if(isEmpty()) {
+			throw new NoSuchElementException();
+		}
+		int size = size();
+		if(size == 1 && front.elem.equals(elem)) {
+			front = null;
+			return 1;
+		} else {
+			int position = removeLastElemRecursive(front, elem, size, 1);
+			if(position == 0) {
+				throw new NoSuchElementException();
+			}
+			return position;
+		}
 	}
 
+	public int removeLastElemRecursive(Node<T> node, T elem , int size, int current) {
+		if(node == null) {
+			return 0;
+		}
+		if(node.elem.equals(elem)) {
+			if(current == size) {
+				if(current == 1) {
+					front = node.next;
+				} else {
+					Node<T> prev = getNodeAtPosition(front, current - 1);
+					prev.next = node.next;
+				}
+				return current;
+			} 
+		}
+		return removeLastElemRecursive(node.next, elem, size, current + 1);
+	}
+
+	private Node<T> getNodeAtPosition(Node<T> node, int position) {
+		if(position < 1 || position > size()) {
+			throw new IllegalArgumentException();
+		}
+		for(int i = 0; i < position; i++) {
+			node = node.next;
+		}
+		return node;
+	}
 
 
 	@Override
@@ -193,6 +276,11 @@ public class LinkedEDList<T> implements EDList<T> {
 	public int removeFirstElem(T elem) {
 		// TODO Auto-generated method stub
 		return 0;
+	}
+
+	@Override
+	public boolean addBefore(T elem, T target) {
+		return false;
 	}
 
 	@Override
