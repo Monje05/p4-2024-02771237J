@@ -101,7 +101,7 @@ public class LinkedEDList<T> implements EDList<T> {
 		return getElemPosRecursive(front, position);
 	}
 
-	public T getElemPosRecursive(Node<T> node, int position) {
+	private T getElemPosRecursive(Node<T> node, int position) {
 		if(position == 1) {
 			return node.elem;
 		} else {
@@ -123,7 +123,7 @@ public class LinkedEDList<T> implements EDList<T> {
 		return position;
 	}
 
-	public int getPosFirstRecursive(Node<T> node, T elem, int position) {
+	private int getPosFirstRecursive(Node<T> node, T elem, int position) {
 		if(node == null) {
 			return -1;
 		}
@@ -147,7 +147,7 @@ public class LinkedEDList<T> implements EDList<T> {
 		return position;
 	}
 
-	public int getPosLastRecursive(Node<T> node, T elem, int current, int lastPosition) {
+	private int getPosLastRecursive(Node<T> node, T elem, int current, int lastPosition) {
 		if(node == null) {
 			return lastPosition;
 		}
@@ -168,7 +168,7 @@ public class LinkedEDList<T> implements EDList<T> {
 		return null;
 	}
 
-	public Node<T> removeLastRecursive(Node<T> node) {
+	private Node<T> removeLastRecursive(Node<T> node) {
 		if(node.next == null) {
 			return null;
 		}
@@ -191,16 +191,16 @@ public class LinkedEDList<T> implements EDList<T> {
 			return 1;
 		} else {
 			int position = removeLastElemRecursive(front, elem, size, 1);
-			if(position == 0) {
+			if(position == -1) {
 				throw new NoSuchElementException();
 			}
 			return position;
 		}
 	}
 
-	public int removeLastElemRecursive(Node<T> node, T elem , int size, int current) {
+	private int removeLastElemRecursive(Node<T> node, T elem , int size, int current) {
 		if(node == null) {
-			return 0;
+			return -1;
 		}
 		if(node.elem.equals(elem)) {
 			if(current == size) {
@@ -213,7 +213,11 @@ public class LinkedEDList<T> implements EDList<T> {
 				return current;
 			} 
 		}
-		return removeLastElemRecursive(node.next, elem, size, current + 1);
+		int result = removeLastElemRecursive(node.next, elem, size, current + 1);
+		if(result == -1)  {
+			return -1;
+		}
+		return result;
 	}
 
 	private Node<T> getNodeAtPosition(Node<T> node, int position) {
@@ -229,9 +233,18 @@ public class LinkedEDList<T> implements EDList<T> {
 
 	@Override
 	public EDList<T> reverse() {
-		// TODO RECURSIVAMENTE
-		return null;
+		EDList<T> reversedList = new LinkedEDList<>();
+		reverseRecursive(front, reversedList);
+		return reversedList;
 	}
+
+	private void reverseRecursive(Node<T> node, EDList<T> reversedList) {
+		if(node == null) {
+			return;
+		}
+		reverseRecursive(node.next, reversedList);
+		reversedList.addLast(node.elem);
+ 	}
 
 
 

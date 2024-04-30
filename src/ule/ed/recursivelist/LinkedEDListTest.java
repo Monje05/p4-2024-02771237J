@@ -192,7 +192,34 @@ public class LinkedEDListTest {
 		lista.addLast("3");
 		lista.addLast("3");
 		lista.addLast("5");
-		Assert.assertEquals(5, lista.removeLastElem("3"));
+		Assert.assertEquals(6, lista.removeLastElem("5"));
+	}
+
+	@Test(expected = NullPointerException.class)
+	public void testRemoveLastNullException() {
+		lista.removeLastElem(null);
+	}
+
+	@Test(expected = NoSuchElementException.class)
+	public void testRemoveLastNoSuchExcepion() {
+		lista.addLast("4");
+		lista.addLast("4");
+		lista.addLast("6");
+		lista.addLast("3");
+		lista.addLast("3");
+		lista.addLast("5");
+		lista.removeLastElem("9");
+	}
+
+	@Test
+	public void testReverse() {
+		lista.addLast("4");
+		lista.addLast("4");
+		lista.addLast("6");
+		lista.addLast("3");
+		lista.addLast("3");
+		lista.addLast("5");
+		Assert.assertEquals("(5 3 3 6 4 4 )", lista.reverse().toString());
 	}
 
 	@Test(expected=EmptyCollectionException.class)
