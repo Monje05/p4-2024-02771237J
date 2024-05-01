@@ -224,7 +224,7 @@ public class LinkedEDList<T> implements EDList<T> {
 		if(position < 1 || position > size()) {
 			throw new IllegalArgumentException();
 		}
-		for(int i = 0; i < position; i++) {
+		for(int i = 1; i < position; i++) {
 			node = node.next;
 		}
 		return node;
@@ -250,24 +250,73 @@ public class LinkedEDList<T> implements EDList<T> {
 
 	@Override
 	public int removeOddElements(){
-		// TODO RECURSIVAMENTE
-		return 0;
+		int count = removeOddElementsRecursive(front, 1);
+		return count;
+	}
+
+	private int removeOddElementsRecursive(Node<T> node, int position) {
+		if(node == null) {
+			return 0;
+		}
+		int count = 0;
+		if(position % 2 != 0) {
+			if(position == 1) {
+				front = node.next;
+			} else {
+				Node<T> prev = getNodeAtPosition(front, position - 1);
+				prev.next = node.next;
+			}
+			count++;
+		}
+		count += removeOddElementsRecursive(node.next, position + 1);
+		return count;
 	}
 
 
 
 	@Override
 	public int removeConsecDuplicates() {
-		// TODO RECURSIVAMENTE
-		return 0;
+		int count = removeConsecDuplicatesRecursice(front);
+		return count;
+	}
+
+	private int removeConsecDuplicatesRecursice(Node<T> node) {
+		if(node == null || node.next == null) {
+			return 0;
+		}
+		int count = 0;
+		if(node.next.elem.equals(node.elem)) {
+			node.next = node.next.next;
+			count++;
+			count += removeConsecDuplicatesRecursice(node);
+		} else {
+			count += removeConsecDuplicatesRecursice(node.next);
+		}
+		return count;
 	}
 
 
 
 	@Override
 	public String toSringExceptFromUntilReverse(int from, int until) {
-		// TODO RECURSIVAMENTE
-		return null;
+		if(from <= 0 || until <= 0 || from < until) {
+			throw new IllegalArgumentException();
+		}
+		StringBuilder result = new StringBuilder();
+		toSringExceptFromUntilReverseRecursive(front, from, until, result);
+		return "(" + result.toString() + " )";
+	}
+
+	private void toSringExceptFromUntilReverseRecursive(Node<T> node, int from, int until, StringBuilder result) {
+		if(node == null || until == 1) {
+			return;
+		}
+		if(from > 1 && from <= size()) {
+			from--;
+		} else {
+			result.append(node.elem + " ");
+		}
+		toSringExceptFromUntilReverseRecursive(node.next, from, until - 1, result);
 	}
 
 

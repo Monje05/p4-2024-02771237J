@@ -202,6 +202,7 @@ public class LinkedEDListTest {
 
 	@Test(expected = NoSuchElementException.class)
 	public void testRemoveLastNoSuchExcepion() {
+		lista.removeLastElem("4");
 		lista.addLast("4");
 		lista.addLast("4");
 		lista.addLast("6");
@@ -220,6 +221,40 @@ public class LinkedEDListTest {
 		lista.addLast("3");
 		lista.addLast("5");
 		Assert.assertEquals("(5 3 3 6 4 4 )", lista.reverse().toString());
+	}
+
+	@Test
+	public void testRemoveOddElements() {
+		lista.addLast("1");
+		lista.addLast("4");
+		lista.addLast("6");
+		lista.addLast("3");
+		lista.addLast("7");
+		lista.addLast("5");
+		lista.removeOddElements();
+		Assert.assertEquals("(4 3 5 )", lista.toString());
+	}
+
+	@Test
+	public void testRemoveConsecutive() {
+		lista.addLast("1");
+		lista.addLast("4");
+		lista.addLast("4");
+		lista.addLast("3");
+		lista.addLast("3");
+		lista.addLast("3");
+		Assert.assertEquals(3, lista.removeConsecDuplicates());
+	}
+
+	@Test
+	public void testToStringFromUntil() {
+		lista.addLast("1");
+		lista.addLast("4");
+		lista.addLast("4");
+		lista.addLast("3");
+		lista.addLast("3");
+		lista.addLast("3");
+		Assert.assertEquals("(4 4 1)", lista.toSringExceptFromUntilReverse(6, 3));
 	}
 
 	@Test(expected=EmptyCollectionException.class)
