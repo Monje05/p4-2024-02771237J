@@ -252,11 +252,59 @@ public class LinkedEDListTest {
 		lista.addLast("4");
 		lista.addLast("4");
 		lista.addLast("3");
+		lista.addLast("6");
 		lista.addLast("3");
-		lista.addLast("3");
-		Assert.assertEquals("(4 4 1)", lista.toSringExceptFromUntilReverse(6, 3));
+		Assert.assertEquals("(4 4 1 )", lista.toSringExceptFromUntilReverse(6, 4));
+		Assert.assertEquals("(4 1 )", lista.toSringExceptFromUntilReverse(15, 3));
 	}
 
+	@Test(expected = IllegalArgumentException.class)
+	public void testToStringFromUntilException() {
+		lista.toSringExceptFromUntilReverse(-1, 4);
+		lista.toSringExceptFromUntilReverse(4, -2);
+		lista.toSringExceptFromUntilReverse(2, 4);
+	}
+
+	@Test
+	public void testLengthEquals() {
+		lista.addLast("1");
+		lista.addLast("4");
+		lista.addLast("4");
+		lista.addLast("3");
+		lista.addLast("6");
+		lista.addLast("3");
+		Assert.assertTrue(lista.lengthEqualsTo(6));
+		Assert.assertFalse(lista.lengthEqualsTo(8));
+		Assert.assertFalse(lista.lengthEqualsTo(3));
+	}
+
+	@Test
+	public void testRemoveFirstElem() {
+		lista.addLast("1");
+		lista.addLast("4");
+		lista.addLast("4");
+		lista.addLast("3");
+		lista.addLast("6");
+		lista.addLast("3");
+		Assert.assertEquals(4, lista.removeFirstElem("3"));
+	}
+
+	@Test(expected = NullPointerException.class)
+	public void testRemoveFirstElemNullException() {
+		lista.removeFirstElem(null);
+	}
+
+	@Test(expected = NoSuchElementException.class)
+		public void testRemoveFirstElemNoSuch() {
+		lista.addLast("1");
+		lista.addLast("4");
+		lista.addLast("4");
+		lista.addLast("3");
+		lista.addLast("6");
+		lista.addLast("3");
+		lista.removeFirstElem("2");
+		}
+	
 	@Test(expected=EmptyCollectionException.class)
 	public void test_RemoveLastElem_Vacia() throws EmptyCollectionException{
 		lista.removeLastElem("A");

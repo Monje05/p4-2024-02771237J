@@ -302,29 +302,43 @@ public class LinkedEDList<T> implements EDList<T> {
 		if(from <= 0 || until <= 0 || from < until) {
 			throw new IllegalArgumentException();
 		}
-		StringBuilder result = new StringBuilder();
-		toSringExceptFromUntilReverseRecursive(front, from, until, result);
-		return "(" + result.toString() + " )";
+		if(from > size()) {
+			from = Math.min(from, size());
+		}
+		return "(" + toSringExceptFromUntilReverseRecursive(front, 1, from, until)+ ")";
 	}
 
-	private void toSringExceptFromUntilReverseRecursive(Node<T> node, int from, int until, StringBuilder result) {
-		if(node == null || until == 1) {
-			return;
+	private String toSringExceptFromUntilReverseRecursive(Node<T> node,int current, int from, int until) {
+		if (node == null || current == until) {
+			return "";
 		}
-		if(from > 1 && from <= size()) {
-			from--;
-		} else {
-			result.append(node.elem + " ");
+		String result = "";
+		result += toSringExceptFromUntilReverseRecursive(node.next, current + 1, from, until);
+	
+		if (current < from) {
+			result += node.elem + " ";
 		}
-		toSringExceptFromUntilReverseRecursive(node.next, from, until - 1, result);
+		return result;
 	}
 
 
 
 	@Override
 	public boolean lengthEqualsTo(int n) {
-		// TODO RECURSIVAMENTE
-		return false;
+		if(n < size()) {
+			return false;
+		}
+		return lengthEqualsToRecursive(front, n, 0);
+	}
+
+	private boolean lengthEqualsToRecursive(Node<T> node, int target, int current) {
+		if(target == current) {
+			return true;
+		}
+		if(node == null) {
+			return false;
+		}
+		return lengthEqualsToRecursive(node.next, target, current + 1);
 	}
 
 	@Override
@@ -336,8 +350,31 @@ public class LinkedEDList<T> implements EDList<T> {
 
 	@Override
 	public int removeFirstElem(T elem) {
-		// TODO Auto-generated method stub
-		return 0;
+		if(elem == null) {
+			throw new NullPointerException();
+		}
+		int position = removeFirstElemRecursive(front, elem, 1);
+		if(position == -1) {
+			throw new NoSuchElementException();
+		}
+		return position;
+	}
+
+	private int removeFirstElemRecursive(Node<T> node, T elem, int current) {
+		if(node == null) {
+			return -1;
+		}
+		if(node.elem.equals(elem)) {
+			if(current == 1) {
+				front = node.next;
+				return 1;
+			}else {
+				Node<T> prev = getNodeAtPosition(front, current - 1);
+				prev.next = node.next;
+				return current;
+			}
+		}
+		return removeFirstElemRecursive(node.next, elem, current + 1);
 	}
 
 	@Override
