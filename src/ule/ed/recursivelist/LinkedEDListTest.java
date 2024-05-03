@@ -295,7 +295,7 @@ public class LinkedEDListTest {
 	}
 
 	@Test(expected = NoSuchElementException.class)
-		public void testRemoveFirstElemNoSuch() {
+	public void testRemoveFirstElemNoSuch() {
 		lista.addLast("1");
 		lista.addLast("4");
 		lista.addLast("4");
@@ -303,7 +303,36 @@ public class LinkedEDListTest {
 		lista.addLast("6");
 		lista.addLast("3");
 		lista.removeFirstElem("2");
-		}
+	}
+
+	@Test
+	public void testRemoveEvenElements() {
+		lista.addLast("1");
+		lista.addLast("4");
+		lista.addLast("4");
+		lista.addLast("3");
+		lista.addLast("6");
+		lista.addLast("3");
+		lista.removeEvenElements();
+		Assert.assertEquals("(1 4 6 )", lista.toString());
+	}
+
+	@Test
+	public void testAddBefore() {
+		lista.addLast("1");
+		lista.addLast("4");
+		lista.addLast("4");
+		lista.addLast("3");
+		lista.addLast("6");
+		lista.addLast("3");
+		Assert.assertTrue(lista.addBefore("5", "6"));
+		Assert.assertFalse(lista.addBefore("8", "9"));
+	}
+
+	@Test(expected = NullPointerException.class)
+	public void testAddBeforeNull() {
+		lista.addBefore(null, null);
+	}
 	
 	@Test(expected=EmptyCollectionException.class)
 	public void test_RemoveLastElem_Vacia() throws EmptyCollectionException{

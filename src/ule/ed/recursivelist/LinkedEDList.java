@@ -343,8 +343,24 @@ public class LinkedEDList<T> implements EDList<T> {
 
 	@Override
 	public int removeEvenElements() {
-		// TODO Auto-generated method stub
-		return 0;
+		int count = removeEvenElementsRecursive(front, 1);
+		return count;
+	}
+
+	private int removeEvenElementsRecursive(Node<T> node, int position) {
+		if(node == null) {
+			return 0;
+		}
+		int count = 0;
+		if(position % 2 == 0) {
+			Node<T> prev = getNodeAtPosition(front, position - 1);
+			prev.next = node.next;
+			count++;
+		} else {
+			count += removeEvenElementsRecursive(node.next, position);
+		}
+		count += removeEvenElementsRecursive(node.next, position + 1);
+		return count;
 	}
 
 
@@ -379,7 +395,34 @@ public class LinkedEDList<T> implements EDList<T> {
 
 	@Override
 	public boolean addBefore(T elem, T target) {
-		return false;
+		if(elem == null || target == null) {
+			throw new NullPointerException();
+		}
+		if(front == null || front.elem.equals(target)) {
+			Node<T> nuevo = new Node<T>(elem);
+			nuevo.next = front;
+			front = nuevo;
+			return front.elem.equals(target);
+		}
+		return addBeforeRecursive(null, front, elem, target);
+	}
+
+	private boolean addBeforeRecursive(Node<T> prev, Node<T> node, T elem, T target) {
+		if(node == null) {
+			addPos(elem, 1);
+			return false;
+		}
+		if(node.elem.equals(target)) {
+			Node<T> nuevo = new Node<T>(elem);
+			nuevo.next = node;
+			if(prev != null) {
+				prev.next = nuevo;
+			} else {
+				front = nuevo;
+			}
+			return true;
+		}
+		return addBeforeRecursive(node, node.next, elem, target);
 	}
 
 	@Override
