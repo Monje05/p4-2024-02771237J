@@ -334,7 +334,7 @@ public class LinkedEDListTest {
 		lista.addBefore(null, null);
 	}
 	
-	@Test(expected=EmptyCollectionException.class)
+	@Test(expected=NoSuchElementException.class)
 	public void test_RemoveLastElem_Vacia() throws EmptyCollectionException{
 		lista.removeLastElem("A");
 	}

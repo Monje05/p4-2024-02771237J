@@ -260,19 +260,11 @@ public class LinkedEDList<T> implements EDList<T> {
 		}
 		int count = 0;
 		if(position % 2 != 0) {
-			if(position == 1) {
-				front = node.next;
-			} else {
-				Node<T> prev = getNodeAtPosition(front, position - 1);
-				prev.next = node.next;
-			}
-			count++;
+			removeFirstElem(node.elem);
 		}
 		count += removeOddElementsRecursive(node.next, position + 1);
 		return count;
 	}
-
-
 
 	@Override
 	public int removeConsecDuplicates() {
@@ -353,11 +345,8 @@ public class LinkedEDList<T> implements EDList<T> {
 		}
 		int count = 0;
 		if(position % 2 == 0) {
-			Node<T> prev = getNodeAtPosition(front, position - 1);
-			prev.next = node.next;
+			removeFirstElem(node.elem);
 			count++;
-		} else {
-			count += removeEvenElementsRecursive(node.next, position);
 		}
 		count += removeEvenElementsRecursive(node.next, position + 1);
 		return count;
