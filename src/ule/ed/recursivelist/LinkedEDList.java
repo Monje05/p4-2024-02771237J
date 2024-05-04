@@ -164,16 +164,26 @@ public class LinkedEDList<T> implements EDList<T> {
 		if(isEmpty()) {
 			throw new EmptyCollectionException("La lista esta vacía.");
 		}
-		front = removeLastRecursive(front);
-		return null;
+		T removeElement;
+		if(front.next == null) {
+			removeElement = front.elem;
+			front = null;
+		} else {
+			removeElement = removeLastRecursive(front);
+		}
+		return removeElement;
 	}
 
-	private Node<T> removeLastRecursive(Node<T> node) {
-		if(node.next == null) {
-			return null;
+	private T removeLastRecursive(Node<T> node) {
+		T removeElement;
+		if(node.next.next == null) {
+			removeElement = node.next.elem;
+			node.next = null;
+			return removeElement;
+		} else {
+			 removeElement = removeLastRecursive(node.next);
 		}
-		node.next = removeLastRecursive(node.next);
-		return node;
+		return removeElement;
 	}
 
 
@@ -261,6 +271,7 @@ public class LinkedEDList<T> implements EDList<T> {
 		int count = 0;
 		if(position % 2 != 0) {
 			removeFirstElem(node.elem);
+			count++;
 		}
 		count += removeOddElementsRecursive(node.next, position + 1);
 		return count;
@@ -295,13 +306,13 @@ public class LinkedEDList<T> implements EDList<T> {
 			throw new IllegalArgumentException();
 		}
 		if(from > size()) {
-			from = Math.min(from, size());
+			from = size();
 		}
 		return "(" + toSringExceptFromUntilReverseRecursive(front, 1, from, until)+ ")";
 	}
 
 	private String toSringExceptFromUntilReverseRecursive(Node<T> node,int current, int from, int until) {
-		if (node == null || current == until) {
+		if (node == null || current >= until) {
 			return "";
 		}
 		String result = "";
@@ -387,12 +398,6 @@ public class LinkedEDList<T> implements EDList<T> {
 		if(elem == null || target == null) {
 			throw new NullPointerException();
 		}
-		if(front == null || front.elem.equals(target)) {
-			Node<T> nuevo = new Node<T>(elem);
-			nuevo.next = front;
-			front = nuevo;
-			return front.elem.equals(target);
-		}
 		return addBeforeRecursive(null, front, elem, target);
 	}
 
@@ -407,6 +412,7 @@ public class LinkedEDList<T> implements EDList<T> {
 			if(prev != null) {
 				prev.next = nuevo;
 			} else {
+				nuevo.next = front;
 				front = nuevo;
 			}
 			return true;
@@ -416,12 +422,15 @@ public class LinkedEDList<T> implements EDList<T> {
 
 	@Override
 	public String toString() {
+		if(isEmpty()) {
+			return "(" + toStringRecursive(front) + ")";
+		}
 		return "(" + toStringRecursive(front) + " )";
 	}
 
 	private String toStringRecursive(Node<T> node) {
 		if(isEmpty()) { 
-			return " ";
+			return "";
 		} else if(node == null) {
 			return "";
 		} else if (node.next == null) {

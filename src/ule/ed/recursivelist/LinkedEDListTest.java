@@ -18,6 +18,7 @@ public class LinkedEDListTest {
 	@Test
 	public void test_Vacia() {
 		assertEquals(0,lista.size());
+		Assert.assertEquals("()", lista.toString());
 	}
 
 	@Test
@@ -231,8 +232,7 @@ public class LinkedEDListTest {
 		lista.addLast("3");
 		lista.addLast("7");
 		lista.addLast("5");
-		lista.removeOddElements();
-		Assert.assertEquals("(4 3 5 )", lista.toString());
+		Assert.assertEquals(3, lista.removeOddElements());
 	}
 
 	@Test
@@ -267,6 +267,7 @@ public class LinkedEDListTest {
 
 	@Test
 	public void testLengthEquals() {
+		Assert.assertTrue(lista.lengthEqualsTo(0));
 		lista.addLast("1");
 		lista.addLast("4");
 		lista.addLast("4");
@@ -313,8 +314,7 @@ public class LinkedEDListTest {
 		lista.addLast("3");
 		lista.addLast("6");
 		lista.addLast("3");
-		lista.removeEvenElements();
-		Assert.assertEquals("(1 4 6 )", lista.toString());
+		Assert.assertEquals(3, lista.removeEvenElements());
 	}
 
 	@Test
@@ -325,6 +325,7 @@ public class LinkedEDListTest {
 		lista.addLast("3");
 		lista.addLast("6");
 		lista.addLast("3");
+		Assert.assertTrue(lista.addBefore("5", "1"));
 		Assert.assertTrue(lista.addBefore("5", "6"));
 		Assert.assertFalse(lista.addBefore("8", "9"));
 	}
