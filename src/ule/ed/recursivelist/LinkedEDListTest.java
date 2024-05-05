@@ -256,6 +256,7 @@ public class LinkedEDListTest {
 		lista.addLast("3");
 		Assert.assertEquals("(4 4 1 )", lista.toSringExceptFromUntilReverse(6, 4));
 		Assert.assertEquals("(4 1 )", lista.toSringExceptFromUntilReverse(15, 3));
+		Assert.assertEquals("(3 6 3 )", lista.toSringExceptFromUntilReverse(3, 1));
 	}
 
 	@Test(expected = IllegalArgumentException.class)

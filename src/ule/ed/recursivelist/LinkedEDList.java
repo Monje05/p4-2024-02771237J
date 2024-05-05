@@ -195,23 +195,18 @@ public class LinkedEDList<T> implements EDList<T> {
 		if(isEmpty()) {
 			throw new NoSuchElementException();
 		}
-		int size = size();
-		if(size == 1 && front.elem.equals(elem)) {
-			front = null;
-			return 1;
-		} else {
-			int position = removeLastElemRecursive(front, elem, size, 1);
-			if(position == -1) {
-				throw new NoSuchElementException();
-			}
-			return position;
-		}
+		int position = removeLastElemRecursive(front, elem, size(), 1);
+		if(position == -1) {
+			throw new NoSuchElementException();
+		} 
+		return position;
 	}
 
 	private int removeLastElemRecursive(Node<T> node, T elem , int size, int current) {
 		if(node == null) {
 			return -1;
 		}
+		int result = removeLastElemRecursive(node.next, elem, size, current + 1);
 		if(node.elem.equals(elem)) {
 			if(current == size) {
 				if(current == 1) {
@@ -222,10 +217,6 @@ public class LinkedEDList<T> implements EDList<T> {
 				}
 				return current;
 			} 
-		}
-		int result = removeLastElemRecursive(node.next, elem, size, current + 1);
-		if(result == -1)  {
-			return -1;
 		}
 		return result;
 	}
@@ -311,16 +302,15 @@ public class LinkedEDList<T> implements EDList<T> {
 		return "(" + toSringExceptFromUntilReverseRecursive(front, 1, from, until)+ ")";
 	}
 
-	private String toSringExceptFromUntilReverseRecursive(Node<T> node,int current, int from, int until) {
-		if (node == null || current >= until) {
+	private String toSringExceptFromUntilReverseRecursive(Node<T> node, int current, int from, int until) {
+		if (node == null) {
 			return "";
 		}
-		String result = "";
-		result += toSringExceptFromUntilReverseRecursive(node.next, current + 1, from, until);
-	
-		if (current < from) {
+		String result = toSringExceptFromUntilReverseRecursive(node.next, current + 1, from, until);
+		if (current > from || current < until) {
 			result += node.elem + " ";
 		}
+	
 		return result;
 	}
 
