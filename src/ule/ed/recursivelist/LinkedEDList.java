@@ -195,28 +195,28 @@ public class LinkedEDList<T> implements EDList<T> {
 		if(isEmpty()) {
 			throw new NoSuchElementException();
 		}
-		int position = removeLastElemRecursive(front, elem, size(), 1);
-		if(position == -1) {
-			throw new NoSuchElementException();
+		int position = removeLastElemRecursive(front, elem, 1);
+		if(position == 0) {
+			if(front.elem.equals(elem)) {
+				front = front.next;
+				return 1;
+			} else {
+				throw new NoSuchElementException();
+			}
 		} 
 		return position;
 	}
 
-	private int removeLastElemRecursive(Node<T> node, T elem , int size, int current) {
-		if(node == null) {
-			return -1;
+	private int removeLastElemRecursive(Node<T> node, T elem, int current) {
+		if(node.next == null) {
+			return 0;
 		}
-		int result = removeLastElemRecursive(node.next, elem, size, current + 1);
-		if(node.elem.equals(elem)) {
-			if(current == size) {
-				if(current == 1) {
-					front = node.next;
-				} else {
-					Node<T> prev = getNodeAtPosition(front, current - 1);
-					prev.next = node.next;
-				}
-				return current;
-			} 
+		int result = removeLastElemRecursive(node.next, elem, current + 1);
+		if(result == 0) {
+			if(node.next.elem.equals(elem)) {
+				node.next = node.next.next;
+				return current + 1;
+			}
 		}
 		return result;
 	}
